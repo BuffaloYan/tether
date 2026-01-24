@@ -1,0 +1,50 @@
+{
+  "@@locale": "es",
+
+  "appTitle": "Tether",
+  "appSubtitle": "Tu Aplicación de Registro de Seguridad",
+
+  "loginWithBiometrics": "Iniciar sesión con Biometría",
+  "authenticating": "Autenticando...",
+  "authenticationFailed": "Autenticación fallida. Por favor, inténtelo de nuevo.",
+  "biometricNotAvailable": "La autenticación biométrica no está disponible en este dispositivo",
+
+  "biometricSecurity": "Seguridad Biométrica",
+  "biometricSecurityDesc": "No se necesitan contraseñas",
+
+  "aiCheckins": "Registros con IA",
+  "aiCheckinsDesc": "Verificación de rostro + gesto",
+
+  "automaticAlerts": "Alertas Automáticas",
+  "automaticAlertsDesc": "Contactos de emergencia notificados si no te registras",
+
+  "home": "Inicio",
+  "contacts": "Contactos",
+  "settings": "Ajustes",
+
+  "checkIn": "Registrarse",
+  "emergencyContacts": "Contactos de Emergencia",
+  "addContact": "Agregar Contacto",
+  "addUpTo3Contacts": "Agregar hasta 3 contactos de emergencia",
+
+  "language": "Idioma",
+  "english": "Inglés",
+  "spanish": "Español",
+
+  "gracePeriod": "Período de Gracia para Registro",
+  "hours24": "24 horas",
+  "hours48": "48 horas",
+
+  "premiumFeatures": "Funciones Premium",
+  "voiceActivationMode": "Modo de activación por voz",
+
+  "privacyPolicy": "Política de Privacidad",
+  "termsOfService": "Términos de Servicio",
+
+  "signOut": "Cerrar Sesión",
+  "signOutConfirm": "¿Está seguro de que desea cerrar sesión?",
+  "cancel": "Cancelar",
+
+  "alertSubject": "URGENTE - Registro de Seguridad Perdido",
+  "alertBody": "Esta es una alerta automática de la aplicación de seguridad Tether de {userName}.\n\nNo se han registrado durante {hours} horas (umbral: {gracePeriod} horas).\n\nÚltimo registro: {timestamp}\nÚltima ubicación conocida: {location}\nGoogle Maps: {mapsUrl}\n\nPor favor, intente contactarlos inmediatamente. Si no puede comunicarse con ellos, considere contactar a las autoridades locales para un control de bienestar.\n\n--\nEste mensaje fue enviado por Tether (tether.app)"
+}

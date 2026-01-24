@@ -1,0 +1,84 @@
+{
+  "@@locale": "en",
+
+  "appTitle": "Tether",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+
+  "appSubtitle": "Your Safety Check-in App",
+  "@appSubtitle": {
+    "description": "The subtitle of the application"
+  },
+
+  "loginWithBiometrics": "Login with Biometrics",
+  "@loginWithBiometrics": {
+    "description": "Button text for biometric login"
+  },
+
+  "authenticating": "Authenticating...",
+  "authenticationFailed": "Authentication failed. Please try again.",
+  "biometricNotAvailable": "Biometric authentication is not available on this device",
+
+  "biometricSecurity": "Biometric Security",
+  "biometricSecurityDesc": "No passwords needed",
+
+  "aiCheckins": "AI-Powered Check-ins",
+  "aiCheckinsDesc": "Face + gesture verification",
+
+  "automaticAlerts": "Automatic Alerts",
+  "automaticAlertsDesc": "Emergency contacts notified if you miss check-in",
+
+  "home": "Home",
+  "contacts": "Contacts",
+  "settings": "Settings",
+
+  "checkIn": "Check-in",
+  "emergencyContacts": "Emergency Contacts",
+  "addContact": "Add Contact",
+  "addUpTo3Contacts": "Add up to 3 emergency contacts",
+
+  "language": "Language",
+  "english": "English",
+  "spanish": "Spanish",
+
+  "gracePeriod": "Check-in Grace Period",
+  "hours24": "24 hours",
+  "hours48": "48 hours",
+
+  "premiumFeatures": "Premium Features",
+  "voiceActivationMode": "Voice activation mode",
+
+  "privacyPolicy": "Privacy Policy",
+  "termsOfService": "Terms of Service",
+
+  "signOut": "Sign Out",
+  "signOutConfirm": "Are you sure you want to sign out?",
+  "cancel": "Cancel",
+
+  "alertSubject": "URGENT - Safety Check-in Missed",
+  "alertBody": "This is an automated alert from {userName}'s Tether safety app.\n\nThey have not checked in for {hours} hours (threshold: {gracePeriod} hours).\n\nLast check-in: {timestamp}\nLast known location: {location}\nGoogle Maps: {mapsUrl}\n\nPlease attempt to contact them immediately. If you cannot reach them, consider contacting local authorities for a wellness check.\n\n--\nThis message was sent by Tether (tether.app)",
+  "@alertBody": {
+    "description": "Email/SMS alert message body",
+    "placeholders": {
+      "userName": {
+        "type": "String"
+      },
+      "hours": {
+        "type": "int"
+      },
+      "gracePeriod": {
+        "type": "int"
+      },
+      "timestamp": {
+        "type": "String"
+      },
+      "location": {
+        "type": "String"
+      },
+      "mapsUrl": {
+        "type": "String"
+      }
+    }
+  }
+}

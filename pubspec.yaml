@@ -1,0 +1,69 @@
+name: tether_app
+description: A safety check-in app with biometric authentication and AI-powered gesture recognition
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Firebase - using latest versions for Xcode 15+ compatibility
+  firebase_core: ^3.1.0
+  firebase_auth: ^5.1.0
+  cloud_firestore: ^5.0.0
+  firebase_storage: ^12.0.0
+
+  # Authentication
+  local_auth: ^2.1.8
+
+  # Location services
+  geolocator: ^11.0.0
+  geocoding: ^2.1.1
+
+  # Camera and ML
+  camera: ^0.10.5+9
+  google_mlkit_face_detection: ^0.11.0
+  google_mlkit_pose_detection: ^0.12.0
+  # Note: If Xcode 15+ issues occur, we'll implement platform channels with native Vision API
+
+  # Voice (for premium feature)
+  speech_to_text: ^6.6.0
+  permission_handler: ^11.2.0
+
+  # Internationalization
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
+
+  # UI/UX
+  cupertino_icons: ^1.0.6
+
+  # State management
+  provider: ^6.1.1
+
+  # Utilities
+  uuid: ^4.3.3
+  shared_preferences: ^2.2.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.1
+
+flutter:
+  uses-material-design: true
+  # generate: true  # Using manual localization in lib/l10n/
+
+  assets:
+    - assets/images/
+    - assets/icons/
+
+  # fonts:  # Temporarily disabled until font files are added
+  #   - family: Roboto
+  #     fonts:
+  #       - asset: fonts/Roboto-Regular.ttf
+  #       - asset: fonts/Roboto-Bold.ttf
+  #         weight: 700
