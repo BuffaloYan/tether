@@ -18,7 +18,16 @@ class EmulatorHelper {
   static Future<void> useEmulators() async {
     if (_configured) return;
 
-    await Firebase.initializeApp();
+    // Initialize Firebase with custom options for emulator testing
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: 'test-api-key',
+        appId: '1:123456789:android:test',
+        messagingSenderId: '123456789',
+        projectId: projectId,
+        storageBucket: '$projectId.appspot.com',
+      ),
+    );
 
     FirebaseFirestore.instance.useFirestoreEmulator(
       firestoreHost,
