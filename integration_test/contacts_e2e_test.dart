@@ -283,4 +283,153 @@ void main() {
       expect(contactOrder[2], 'Low Priority');
     });
   });
+
+  group('Contacts E2E - Validation Errors', () {
+    testWidgets('should show error when name is missing', (tester) async {
+      // Launch app
+      app.main();
+      await tester.pumpAndSettle();
+
+      // Initialize page objects
+      loginPage = LoginPage(tester);
+      contactsPage = ContactsPage(tester);
+
+      // Login
+      await loginPage.login('test@example.com', 'testPassword123');
+      await tester.pumpAndSettle();
+
+      // Navigate to contacts
+      await contactsPage.navigateToContacts();
+      await tester.pumpAndSettle();
+
+      // Open add contact form
+      await contactsPage.tapAddContactButton();
+      await tester.pumpAndSettle();
+
+      // Fill only phone (missing name)
+      await contactsPage.enterPhone('+1234567890');
+      await contactsPage.selectPriority('Medium');
+
+      // Try to save
+      await contactsPage.tapSaveButton();
+      await tester.pumpAndSettle();
+
+      // Verify error message is shown
+      expect(contactsPage.hasValidationError('Name is required'), isTrue);
+
+      // Verify form is still open (not saved)
+      expect(contactsPage.isFormVisible(), isTrue);
+    });
+
+    testWidgets('should show error when phone is missing', (tester) async {
+      // Launch app
+      app.main();
+      await tester.pumpAndSettle();
+
+      // Initialize page objects
+      loginPage = LoginPage(tester);
+      contactsPage = ContactsPage(tester);
+
+      // Login
+      await loginPage.login('test@example.com', 'testPassword123');
+      await tester.pumpAndSettle();
+
+      // Navigate to contacts
+      await contactsPage.navigateToContacts();
+      await tester.pumpAndSettle();
+
+      // Open add contact form
+      await contactsPage.tapAddContactButton();
+      await tester.pumpAndSettle();
+
+      // Fill only name (missing phone)
+      await contactsPage.enterName('John Doe');
+      await contactsPage.selectPriority('Medium');
+
+      // Try to save
+      await contactsPage.tapSaveButton();
+      await tester.pumpAndSettle();
+
+      // Verify error message is shown
+      expect(contactsPage.hasValidationError('Phone is required'), isTrue);
+
+      // Verify form is still open (not saved)
+      expect(contactsPage.isFormVisible(), isTrue);
+    });
+
+    testWidgets('should show error when phone is too short', (tester) async {
+      // Launch app
+      app.main();
+      await tester.pumpAndSettle();
+
+      // Initialize page objects
+      loginPage = LoginPage(tester);
+      contactsPage = ContactsPage(tester);
+
+      // Login
+      await loginPage.login('test@example.com', 'testPassword123');
+      await tester.pumpAndSettle();
+
+      // Navigate to contacts
+      await contactsPage.navigateToContacts();
+      await tester.pumpAndSettle();
+
+      // Open add contact form
+      await contactsPage.tapAddContactButton();
+      await tester.pumpAndSettle();
+
+      // Fill with invalid phone
+      await contactsPage.enterName('John Doe');
+      await contactsPage.enterPhone('123');
+      await contactsPage.selectPriority('Medium');
+
+      // Try to save
+      await contactsPage.tapSaveButton();
+      await tester.pumpAndSettle();
+
+      // Verify error message is shown
+      expect(contactsPage.hasValidationError('Phone must be at least 10 digits'), isTrue);
+
+      // Verify form is still open (not saved)
+      expect(contactsPage.isFormVisible(), isTrue);
+    });
+
+    testWidgets('should show error when email format is invalid', (tester) async {
+      // Launch app
+      app.main();
+      await tester.pumpAndSettle();
+
+      // Initialize page objects
+      loginPage = LoginPage(tester);
+      contactsPage = ContactsPage(tester);
+
+      // Login
+      await loginPage.login('test@example.com', 'testPassword123');
+      await tester.pumpAndSettle();
+
+      // Navigate to contacts
+      await contactsPage.navigateToContacts();
+      await tester.pumpAndSettle();
+
+      // Open add contact form
+      await contactsPage.tapAddContactButton();
+      await tester.pumpAndSettle();
+
+      // Fill with invalid email
+      await contactsPage.enterName('John Doe');
+      await contactsPage.enterPhone('+1234567890');
+      await contactsPage.enterEmail('invalid-email');
+      await contactsPage.selectPriority('Medium');
+
+      // Try to save
+      await contactsPage.tapSaveButton();
+      await tester.pumpAndSettle();
+
+      // Verify error message is shown
+      expect(contactsPage.hasValidationError('Invalid email format'), isTrue);
+
+      // Verify form is still open (not saved)
+      expect(contactsPage.isFormVisible(), isTrue);
+    });
+  });
 }
