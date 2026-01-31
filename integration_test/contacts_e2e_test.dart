@@ -189,5 +189,98 @@ void main() {
       await tester.pumpAndSettle();
       expect(contactsPage.getContactEmail(), 'updated@example.com');
     });
+
+    testWidgets('should delete contact successfully', (tester) async {
+      // Launch app
+      app.main();
+      await tester.pumpAndSettle();
+
+      // Initialize page objects
+      loginPage = LoginPage(tester);
+      contactsPage = ContactsPage(tester);
+
+      // Login
+      await loginPage.login('test@example.com', 'testPassword123');
+      await tester.pumpAndSettle();
+
+      // Navigate to contacts
+      await contactsPage.navigateToContacts();
+      await tester.pumpAndSettle();
+
+      // Add contact
+      await contactsPage.tapAddContactButton();
+      await tester.pumpAndSettle();
+      await contactsPage.enterName('Delete Me');
+      await contactsPage.enterPhone('+9999999999');
+      await contactsPage.selectPriority('Medium');
+      await contactsPage.tapSaveButton();
+      await tester.pumpAndSettle();
+
+      // Verify contact exists
+      expect(contactsPage.isContactVisible('Delete Me'), isTrue);
+
+      // Open contact and delete
+      await contactsPage.tapContact('Delete Me');
+      await tester.pumpAndSettle();
+      await contactsPage.tapDeleteButton();
+      await tester.pumpAndSettle();
+
+      // Confirm deletion
+      await contactsPage.confirmDelete();
+      await tester.pumpAndSettle();
+
+      // Verify contact is gone
+      expect(contactsPage.isContactVisible('Delete Me'), isFalse);
+      expect(contactsPage.isEmptyStateVisible(), isTrue);
+    });
+
+    testWidgets('should reorder contacts by priority', (tester) async {
+      // Launch app
+      app.main();
+      await tester.pumpAndSettle();
+
+      // Initialize page objects
+      loginPage = LoginPage(tester);
+      contactsPage = ContactsPage(tester);
+
+      // Login
+      await loginPage.login('test@example.com', 'testPassword123');
+      await tester.pumpAndSettle();
+
+      // Navigate to contacts
+      await contactsPage.navigateToContacts();
+      await tester.pumpAndSettle();
+
+      // Add contacts in mixed priority order
+      await contactsPage.tapAddContactButton();
+      await tester.pumpAndSettle();
+      await contactsPage.enterName('Low Priority');
+      await contactsPage.enterPhone('+1111111111');
+      await contactsPage.selectPriority('Low');
+      await contactsPage.tapSaveButton();
+      await tester.pumpAndSettle();
+
+      await contactsPage.tapAddContactButton();
+      await tester.pumpAndSettle();
+      await contactsPage.enterName('High Priority');
+      await contactsPage.enterPhone('+2222222222');
+      await contactsPage.selectPriority('High');
+      await contactsPage.tapSaveButton();
+      await tester.pumpAndSettle();
+
+      await contactsPage.tapAddContactButton();
+      await tester.pumpAndSettle();
+      await contactsPage.enterName('Medium Priority');
+      await contactsPage.enterPhone('+3333333333');
+      await contactsPage.selectPriority('Medium');
+      await contactsPage.tapSaveButton();
+      await tester.pumpAndSettle();
+
+      // Verify contacts are ordered by priority (High, Medium, Low)
+      final contactOrder = contactsPage.getContactsInOrder();
+      expect(contactOrder[0], 'High Priority');
+      expect(contactOrder[1], 'Medium Priority');
+      expect(contactOrder[2], 'Low Priority');
+    });
   });
 }
