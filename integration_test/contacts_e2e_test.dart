@@ -432,4 +432,120 @@ void main() {
       expect(contactsPage.isFormVisible(), isTrue);
     });
   });
+
+  group('Contacts E2E - Business Logic Errors', () {
+    testWidgets('should show error when max contacts limit reached', (tester) async {
+      // Launch app
+      app.main();
+      await tester.pumpAndSettle();
+
+      // Initialize page objects
+      loginPage = LoginPage(tester);
+      contactsPage = ContactsPage(tester);
+
+      // Login
+      await loginPage.login('test@example.com', 'testPassword123');
+      await tester.pumpAndSettle();
+
+      // Navigate to contacts
+      await contactsPage.navigateToContacts();
+      await tester.pumpAndSettle();
+
+      // Add 3 contacts (max limit)
+      for (int i = 1; i <= 3; i++) {
+        await contactsPage.tapAddContactButton();
+        await tester.pumpAndSettle();
+        await contactsPage.enterName('Contact $i');
+        await contactsPage.enterPhone('+${i}111111111');
+        await contactsPage.selectPriority('Medium');
+        await contactsPage.tapSaveButton();
+        await tester.pumpAndSettle();
+      }
+
+      // Try to add 4th contact
+      await contactsPage.tapAddContactButton();
+      await tester.pumpAndSettle();
+
+      // Verify error message is shown
+      expect(contactsPage.hasError('Maximum 3 emergency contacts allowed'), isTrue);
+
+      // Verify add button is disabled
+      expect(contactsPage.isAddContactButtonEnabled(), isFalse);
+    });
+
+    testWidgets('should cancel add contact operation', (tester) async {
+      // Launch app
+      app.main();
+      await tester.pumpAndSettle();
+
+      // Initialize page objects
+      loginPage = LoginPage(tester);
+      contactsPage = ContactsPage(tester);
+
+      // Login
+      await loginPage.login('test@example.com', 'testPassword123');
+      await tester.pumpAndSettle();
+
+      // Navigate to contacts
+      await contactsPage.navigateToContacts();
+      await tester.pumpAndSettle();
+
+      // Open add contact form
+      await contactsPage.tapAddContactButton();
+      await tester.pumpAndSettle();
+
+      // Fill form
+      await contactsPage.enterName('Cancelled Contact');
+      await contactsPage.enterPhone('+9999999999');
+      await contactsPage.selectPriority('High');
+
+      // Cancel instead of saving
+      await contactsPage.tapCancelButton();
+      await tester.pumpAndSettle();
+
+      // Verify contact was not added
+      expect(contactsPage.isContactVisible('Cancelled Contact'), isFalse);
+      expect(contactsPage.isEmptyStateVisible(), isTrue);
+    });
+
+    testWidgets('should cancel delete contact operation', (tester) async {
+      // Launch app
+      app.main();
+      await tester.pumpAndSettle();
+
+      // Initialize page objects
+      loginPage = LoginPage(tester);
+      contactsPage = ContactsPage(tester);
+
+      // Login
+      await loginPage.login('test@example.com', 'testPassword123');
+      await tester.pumpAndSettle();
+
+      // Navigate to contacts
+      await contactsPage.navigateToContacts();
+      await tester.pumpAndSettle();
+
+      // Add contact
+      await contactsPage.tapAddContactButton();
+      await tester.pumpAndSettle();
+      await contactsPage.enterName('Keep Me');
+      await contactsPage.enterPhone('+8888888888');
+      await contactsPage.selectPriority('Medium');
+      await contactsPage.tapSaveButton();
+      await tester.pumpAndSettle();
+
+      // Open contact and initiate delete
+      await contactsPage.tapContact('Keep Me');
+      await tester.pumpAndSettle();
+      await contactsPage.tapDeleteButton();
+      await tester.pumpAndSettle();
+
+      // Cancel deletion
+      await contactsPage.cancelDelete();
+      await tester.pumpAndSettle();
+
+      // Verify contact still exists
+      expect(contactsPage.isContactVisible('Keep Me'), isTrue);
+    });
+  });
 }
