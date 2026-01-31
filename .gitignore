@@ -112,6 +112,10 @@ secrets/
 # Test coverage
 coverage/
 
+# Git worktrees
+.worktrees/
+worktrees/
+
 # Generated files
 *.g.dart
 *.freezed.dart
