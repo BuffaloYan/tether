@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/auth_service.dart';
@@ -50,6 +51,90 @@ class _LoginScreenState extends State<LoginScreen> {
     } catch (e) {
       setState(() {
         _errorMessage = 'An error occurred: ${e.toString()}';
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _signInWithGoogle() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final authService = context.read<AuthService>();
+      final success = await authService.signInWithGoogle();
+
+      if (success && mounted) {
+        Navigator.of(context).pushReplacementNamed('/home');
+      } else {
+        setState(() {
+          _errorMessage = 'Google sign-in was canceled or failed.';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Google sign-in error: ${e.toString()}';
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _signInWithFacebook() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final authService = context.read<AuthService>();
+      final success = await authService.signInWithFacebook();
+
+      if (success && mounted) {
+        Navigator.of(context).pushReplacementNamed('/home');
+      } else {
+        setState(() {
+          _errorMessage = 'Facebook sign-in was canceled or failed.';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Facebook sign-in error: ${e.toString()}';
+      });
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _signInWithApple() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      final authService = context.read<AuthService>();
+      final success = await authService.signInWithApple();
+
+      if (success && mounted) {
+        Navigator.of(context).pushReplacementNamed('/home');
+      } else {
+        setState(() {
+          _errorMessage = 'Apple sign-in was canceled or failed.';
+        });
+      }
+    } catch (e) {
+      setState(() {
+        _errorMessage = 'Apple sign-in error: ${e.toString()}';
       });
     } finally {
       setState(() {
@@ -154,6 +239,76 @@ class _LoginScreenState extends State<LoginScreen> {
                   textStyle: const TextStyle(fontSize: 16),
                 ),
               ),
+
+              const SizedBox(height: 24),
+
+              // Or divider
+              Row(
+                children: [
+                  const Expanded(child: Divider()),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      'OR',
+                      style: TextStyle(
+                        color: theme.textTheme.bodySmall?.color,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                  ),
+                  const Expanded(child: Divider()),
+                ],
+              ),
+
+              const SizedBox(height: 24),
+
+              // Social login buttons
+              OutlinedButton.icon(
+                onPressed: _isLoading ? null : _signInWithGoogle,
+                icon: Image.asset(
+                  'assets/icons/google_logo.png',
+                  height: 20,
+                  errorBuilder: (context, error, stackTrace) =>
+                    const Icon(Icons.g_mobiledata, size: 24),
+                ),
+                label: const Text('Continue with Google'),
+                style: OutlinedButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  side: BorderSide(color: theme.dividerColor),
+                ),
+              ),
+
+              const SizedBox(height: 12),
+
+              // Facebook Sign In - DISABLED
+              // OutlinedButton.icon(
+              //   onPressed: _isLoading ? null : _signInWithFacebook,
+              //   icon: Image.asset(
+              //     'assets/icons/facebook_logo.png',
+              //     height: 20,
+              //     errorBuilder: (context, error, stackTrace) =>
+              //       const Icon(Icons.facebook, color: Color(0xFF1877F2)),
+              //   ),
+              //   label: const Text('Continue with Facebook'),
+              //   style: OutlinedButton.styleFrom(
+              //     padding: const EdgeInsets.symmetric(vertical: 14),
+              //     side: BorderSide(color: theme.dividerColor),
+              //   ),
+              // ),
+
+              // Apple Sign In (iOS only)
+              if (Platform.isIOS) ...[
+                const SizedBox(height: 12),
+                OutlinedButton.icon(
+                  onPressed: _isLoading ? null : _signInWithApple,
+                  icon: const Icon(Icons.apple, size: 24),
+                  label: const Text('Continue with Apple'),
+                  style: OutlinedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    side: BorderSide(color: theme.dividerColor),
+                  ),
+                ),
+              ],
             ],
           ),
         ),

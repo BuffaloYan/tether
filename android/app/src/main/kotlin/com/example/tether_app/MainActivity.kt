@@ -1,4 +1,4 @@
-package com.example.tether_app
+package com.wy.tether.app
 
 import io.flutter.embedding.android.FlutterActivity
 

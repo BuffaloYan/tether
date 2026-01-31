@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:provider/provider.dart';
+import 'firebase_options.dart';
 import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'services/auth_service.dart';
-// import 'l10n/app_localizations.dart';  // Temporarily disabled - localization files missing
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Initialize Firebase
-  await Firebase.initializeApp();
+  // Initialize Firebase manually (auto-init disabled in AndroidManifest.xml)
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 
   runApp(const TetherApp());
 }
@@ -31,7 +33,6 @@ class TetherApp extends StatelessWidget {
 
         // Localization
         localizationsDelegates: const [
-          // AppLocalizations.delegate,  // Temporarily disabled
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
