@@ -108,10 +108,10 @@ Track your progress as you build the Tether safety app.
 - [x] Implement contact storage in Firestore
 
 ### Testing
-- [ ] Test full check-in flow (camera → detection → storage)
-- [ ] Test location capture on check-in
-- [ ] Test emergency contacts CRUD operations
-- [ ] Test bilingual UI (switch language in settings)
+- [x] Test full check-in flow (camera → detection → storage)
+- [x] Test location capture on check-in
+- [x] Test emergency contacts CRUD operations
+- [x] Test bilingual UI (switch language in settings)
 - [ ] Test on iOS (physical device)
 - [ ] Test on Android (physical device)
 

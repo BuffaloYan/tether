@@ -296,6 +296,34 @@ flutter drive --target=test_driver/app.dart
 cd functions && npm test
 ```
 
+## Testing
+
+### Running E2E Tests
+
+1. Start Firebase Emulators:
+   ```bash
+   ./scripts/start_emulators.sh
+   ```
+
+2. In a separate terminal, run tests:
+   ```bash
+   flutter test integration_test/
+   ```
+
+3. Run specific test file:
+   ```bash
+   flutter test integration_test/contacts_e2e_test.dart
+   ```
+
+### Test Coverage
+
+- **Happy Path Tests:** Contact CRUD operations (add, edit, delete, reorder)
+- **Validation Tests:** Form validation for name, phone, email
+- **Business Logic Tests:** Max contacts limit, cancellation flows
+- **Security Tests:** Firestore rules preventing unauthorized access
+
+Tests use Firebase Emulator Suite for fast, reliable execution without touching production data.
+
 ## Deployment
 
 ### Deploy Cloud Functions
