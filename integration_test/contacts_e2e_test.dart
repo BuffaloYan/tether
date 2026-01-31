@@ -10,18 +10,16 @@ import 'page_objects/login_page.dart';
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
-  late EmulatorHelper emulatorHelper;
   late FirebaseHelper firebaseHelper;
   late ContactsPage contactsPage;
   late LoginPage loginPage;
 
   setUpAll(() async {
-    emulatorHelper = EmulatorHelper();
-    await emulatorHelper.startEmulators();
+    await EmulatorHelper.useEmulators();
   });
 
-  tearDownAll(() async {
-    await emulatorHelper.stopEmulators();
+  setUp(() async {
+    await EmulatorHelper.resetAll();
   });
 
   setUp(() async {

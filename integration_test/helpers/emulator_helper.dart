@@ -62,10 +62,10 @@ class EmulatorHelper {
     final userData = app_user.UserData(
       deviceId: testDeviceId,
       uid: uid,
+      createdAt: DateTime.now(),
       gracePeriodHours: 24,
-      alertsPaused: false,
-      alertStatus: 'ok',
-      language: 'en',
+      alerted: false,
+      preferredLanguage: 'en',
     );
 
     await firestoreService.createOrUpdateUser(userData);
