@@ -7,13 +7,16 @@ import 'screens/login_screen.dart';
 import 'screens/home_screen.dart';
 import 'services/auth_service.dart';
 
-void main() async {
+void main({bool skipFirebaseInit = false}) async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Initialize Firebase manually (auto-init disabled in AndroidManifest.xml)
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+  // Skip initialization in test mode when emulator is already configured
+  if (!skipFirebaseInit) {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  }
 
   runApp(const TetherApp());
 }

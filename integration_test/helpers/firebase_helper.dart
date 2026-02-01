@@ -37,18 +37,34 @@ class FirebaseHelper {
     required String password,
   }) async {
     try {
-      // Try to sign in first (user might already exist)
+      // First, make sure we're signed out
+      if (_auth.currentUser != null) {
+        await _auth.signOut();
+      }
+
+      // Try to create a new user
       try {
-        return await _auth.signInWithEmailAndPassword(
-          email: email,
-          password: password,
-        );
-      } catch (e) {
-        // If sign in fails, create new user
         return await _auth.createUserWithEmailAndPassword(
           email: email,
           password: password,
         );
+      } on FirebaseAuthException catch (e) {
+        // If user already exists, sign in instead
+        if (e.code == 'email-already-in-use') {
+          try {
+            return await _auth.signInWithEmailAndPassword(
+              email: email,
+              password: password,
+            );
+          } catch (signInError) {
+            // If sign in also fails, the password might be wrong or account is in bad state
+            // In emulator, we can't recover from this, so rethrow
+            print('Error signing in with existing user: $signInError');
+            rethrow;
+          }
+        }
+        // For other errors, rethrow
+        rethrow;
       }
     } catch (e) {
       print('Error creating test user: $e');

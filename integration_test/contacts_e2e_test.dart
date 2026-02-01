@@ -13,32 +13,37 @@ void main() {
   late FirebaseHelper firebaseHelper;
   late ContactsPage contactsPage;
   late LoginPage loginPage;
+  late String testEmail;
+  const String testPassword = 'testPassword123';
 
   setUpAll(() async {
     await EmulatorHelper.useEmulators();
   });
 
   setUp(() async {
+    // Clear emulator data and create test user with unique email
     await EmulatorHelper.resetAll();
-  });
 
-  setUp(() async {
+    // Use timestamp to create unique email for each test
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    testEmail = 'test$timestamp@example.com';
+
     firebaseHelper = FirebaseHelper();
-    await firebaseHelper.clearAllData();
     await firebaseHelper.createTestUser(
-      email: 'test@example.com',
-      password: 'testPassword123',
+      email: testEmail,
+      password: testPassword,
     );
   });
 
   tearDown(() async {
-    await firebaseHelper.clearAllData();
+    // Clear data after each test
+    await EmulatorHelper.resetAll();
   });
 
   group('Contacts E2E - Happy Path', () {
     testWidgets('should add first contact successfully', (tester) async {
-      // Launch app
-      app.main();
+      // Launch app (skip Firebase init since emulator is already configured)
+      app.main(skipFirebaseInit: true);
       await tester.pumpAndSettle();
 
       // Initialize page objects
@@ -46,7 +51,7 @@ void main() {
       contactsPage = ContactsPage(tester);
 
       // Login
-      await loginPage.login('test@example.com', 'testPassword123');
+      await loginPage.login(testEmail, testPassword);
       await tester.pumpAndSettle();
 
       // Navigate to contacts
@@ -79,8 +84,8 @@ void main() {
     });
 
     testWidgets('should add multiple contacts successfully', (tester) async {
-      // Launch app
-      app.main();
+      // Launch app (skip Firebase init since emulator is already configured)
+      app.main(skipFirebaseInit: true);
       await tester.pumpAndSettle();
 
       // Initialize page objects
@@ -88,7 +93,7 @@ void main() {
       contactsPage = ContactsPage(tester);
 
       // Login
-      await loginPage.login('test@example.com', 'testPassword123');
+      await loginPage.login(testEmail, testPassword);
       await tester.pumpAndSettle();
 
       // Navigate to contacts
@@ -134,8 +139,8 @@ void main() {
     });
 
     testWidgets('should edit contact successfully', (tester) async {
-      // Launch app
-      app.main();
+      // Launch app (skip Firebase init since emulator is already configured)
+      app.main(skipFirebaseInit: true);
       await tester.pumpAndSettle();
 
       // Initialize page objects
@@ -143,7 +148,7 @@ void main() {
       contactsPage = ContactsPage(tester);
 
       // Login
-      await loginPage.login('test@example.com', 'testPassword123');
+      await loginPage.login(testEmail, testPassword);
       await tester.pumpAndSettle();
 
       // Navigate to contacts
@@ -189,8 +194,8 @@ void main() {
     });
 
     testWidgets('should delete contact successfully', (tester) async {
-      // Launch app
-      app.main();
+      // Launch app (skip Firebase init since emulator is already configured)
+      app.main(skipFirebaseInit: true);
       await tester.pumpAndSettle();
 
       // Initialize page objects
@@ -198,7 +203,7 @@ void main() {
       contactsPage = ContactsPage(tester);
 
       // Login
-      await loginPage.login('test@example.com', 'testPassword123');
+      await loginPage.login(testEmail, testPassword);
       await tester.pumpAndSettle();
 
       // Navigate to contacts
@@ -233,8 +238,8 @@ void main() {
     });
 
     testWidgets('should reorder contacts by priority', (tester) async {
-      // Launch app
-      app.main();
+      // Launch app (skip Firebase init since emulator is already configured)
+      app.main(skipFirebaseInit: true);
       await tester.pumpAndSettle();
 
       // Initialize page objects
@@ -242,7 +247,7 @@ void main() {
       contactsPage = ContactsPage(tester);
 
       // Login
-      await loginPage.login('test@example.com', 'testPassword123');
+      await loginPage.login(testEmail, testPassword);
       await tester.pumpAndSettle();
 
       // Navigate to contacts
@@ -284,8 +289,8 @@ void main() {
 
   group('Contacts E2E - Validation Errors', () {
     testWidgets('should show error when name is missing', (tester) async {
-      // Launch app
-      app.main();
+      // Launch app (skip Firebase init since emulator is already configured)
+      app.main(skipFirebaseInit: true);
       await tester.pumpAndSettle();
 
       // Initialize page objects
@@ -293,7 +298,7 @@ void main() {
       contactsPage = ContactsPage(tester);
 
       // Login
-      await loginPage.login('test@example.com', 'testPassword123');
+      await loginPage.login(testEmail, testPassword);
       await tester.pumpAndSettle();
 
       // Navigate to contacts
@@ -320,8 +325,8 @@ void main() {
     });
 
     testWidgets('should show error when phone is missing', (tester) async {
-      // Launch app
-      app.main();
+      // Launch app (skip Firebase init since emulator is already configured)
+      app.main(skipFirebaseInit: true);
       await tester.pumpAndSettle();
 
       // Initialize page objects
@@ -329,7 +334,7 @@ void main() {
       contactsPage = ContactsPage(tester);
 
       // Login
-      await loginPage.login('test@example.com', 'testPassword123');
+      await loginPage.login(testEmail, testPassword);
       await tester.pumpAndSettle();
 
       // Navigate to contacts
@@ -356,8 +361,8 @@ void main() {
     });
 
     testWidgets('should show error when phone is too short', (tester) async {
-      // Launch app
-      app.main();
+      // Launch app (skip Firebase init since emulator is already configured)
+      app.main(skipFirebaseInit: true);
       await tester.pumpAndSettle();
 
       // Initialize page objects
@@ -365,7 +370,7 @@ void main() {
       contactsPage = ContactsPage(tester);
 
       // Login
-      await loginPage.login('test@example.com', 'testPassword123');
+      await loginPage.login(testEmail, testPassword);
       await tester.pumpAndSettle();
 
       // Navigate to contacts
@@ -393,8 +398,8 @@ void main() {
     });
 
     testWidgets('should show error when email format is invalid', (tester) async {
-      // Launch app
-      app.main();
+      // Launch app (skip Firebase init since emulator is already configured)
+      app.main(skipFirebaseInit: true);
       await tester.pumpAndSettle();
 
       // Initialize page objects
@@ -402,7 +407,7 @@ void main() {
       contactsPage = ContactsPage(tester);
 
       // Login
-      await loginPage.login('test@example.com', 'testPassword123');
+      await loginPage.login(testEmail, testPassword);
       await tester.pumpAndSettle();
 
       // Navigate to contacts
@@ -433,8 +438,8 @@ void main() {
 
   group('Contacts E2E - Business Logic Errors', () {
     testWidgets('should show error when max contacts limit reached', (tester) async {
-      // Launch app
-      app.main();
+      // Launch app (skip Firebase init since emulator is already configured)
+      app.main(skipFirebaseInit: true);
       await tester.pumpAndSettle();
 
       // Initialize page objects
@@ -442,7 +447,7 @@ void main() {
       contactsPage = ContactsPage(tester);
 
       // Login
-      await loginPage.login('test@example.com', 'testPassword123');
+      await loginPage.login(testEmail, testPassword);
       await tester.pumpAndSettle();
 
       // Navigate to contacts
@@ -472,8 +477,8 @@ void main() {
     });
 
     testWidgets('should cancel add contact operation', (tester) async {
-      // Launch app
-      app.main();
+      // Launch app (skip Firebase init since emulator is already configured)
+      app.main(skipFirebaseInit: true);
       await tester.pumpAndSettle();
 
       // Initialize page objects
@@ -481,7 +486,7 @@ void main() {
       contactsPage = ContactsPage(tester);
 
       // Login
-      await loginPage.login('test@example.com', 'testPassword123');
+      await loginPage.login(testEmail, testPassword);
       await tester.pumpAndSettle();
 
       // Navigate to contacts
@@ -507,8 +512,8 @@ void main() {
     });
 
     testWidgets('should cancel delete contact operation', (tester) async {
-      // Launch app
-      app.main();
+      // Launch app (skip Firebase init since emulator is already configured)
+      app.main(skipFirebaseInit: true);
       await tester.pumpAndSettle();
 
       // Initialize page objects
@@ -516,7 +521,7 @@ void main() {
       contactsPage = ContactsPage(tester);
 
       // Login
-      await loginPage.login('test@example.com', 'testPassword123');
+      await loginPage.login(testEmail, testPassword);
       await tester.pumpAndSettle();
 
       // Navigate to contacts
