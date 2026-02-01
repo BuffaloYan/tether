@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Facebook App Configuration -->
+    <!-- TODO: Replace YOUR-APP-ID with actual Facebook App ID from https://developers.facebook.com/ -->
+    <string name="facebook_app_id">YOUR-APP-ID</string>
+    <string name="fb_login_protocol_scheme">fbYOUR-APP-ID</string>
+    <!-- TODO: Replace YOUR-CLIENT-TOKEN with actual Facebook Client Token -->
+    <string name="facebook_client_token">YOUR-CLIENT-TOKEN</string>
+</resources>

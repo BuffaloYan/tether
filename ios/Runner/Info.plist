@@ -50,5 +50,35 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<!-- Google Sign-In & Facebook URL Schemes -->
+	<key>CFBundleURLTypes</key>
+	<array>
+	<dict>
+		<key>CFBundleTypeRole</key>
+		<string>Editor</string>
+		<key>CFBundleURLSchemes</key>
+		<array>
+		<!-- Google Sign-In REVERSED_CLIENT_ID -->
+		<string>com.googleusercontent.apps.2475995227-ns4d1lbualimq373tr7b0injqiun3ht7</string>
+		</array>
+	</dict>
+	<dict>
+		<key>CFBundleURLSchemes</key>
+		<array>
+		<!-- Facebook App ID - TODO: Replace YOUR-APP-ID with actual Facebook App ID -->
+		<string>fbYOUR-APP-ID</string>
+		</array>
+	</dict>
+	</array>
+	<!-- Facebook Configuration -->
+	<key>FacebookAppID</key>
+	<string>YOUR-APP-ID</string>
+	<key>FacebookDisplayName</key>
+	<string>Tether</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+	<string>fbapi</string>
+	<string>fb-messenger-share-api</string>
+	</array>
 </dict>
 </plist>

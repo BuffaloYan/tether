@@ -13,7 +13,7 @@ class FirestoreService {
   /// Create or update user document
   Future<bool> createOrUpdateUser(UserData user) async {
     try {
-      await _usersCollection.doc(user.deviceId).set(user.toMap(), SetOptions(merge: true));
+      await _usersCollection.doc(user.deviceId).set(user.toJson(), SetOptions(merge: true));
       debugPrint('User document created/updated: ${user.deviceId}');
       return true;
     } catch (e) {
@@ -27,7 +27,7 @@ class FirestoreService {
     try {
       final doc = await _usersCollection.doc(deviceId).get();
       if (doc.exists) {
-        return UserData.fromMap(doc.data() as Map<String, dynamic>);
+        return UserData.fromJson(doc.data() as Map<String, dynamic>);
       }
       return null;
     } catch (e) {
@@ -46,7 +46,7 @@ class FirestoreService {
 
       // Add location data if provided
       if (location != null) {
-        updateData['lastLocation'] = location.toMap();
+        updateData['lastLocation'] = location.toJson();
       }
 
       await _usersCollection.doc(deviceId).update(updateData);
@@ -66,7 +66,7 @@ class FirestoreService {
           .collection('checkInHistory')
           .add({
         'timestamp': FieldValue.serverTimestamp(),
-        'location': location?.toMap(),
+        'location': location?.toJson(),
       });
       debugPrint('Check-in added to history');
       return true;
@@ -114,7 +114,7 @@ class FirestoreService {
           .doc(deviceId)
           .collection('contacts')
           .doc(contact.id)
-          .set(contact.toMap());
+          .set(contact.toJson());
 
       debugPrint('Contact added: ${contact.name}');
       return true;
@@ -142,7 +142,7 @@ class FirestoreService {
           .doc(deviceId)
           .collection('contacts')
           .doc(contact.id)
-          .set(contact.toMap());
+          .set(contact.toJson());
 
       debugPrint('Contact updated: ${contact.name}');
       return true;
@@ -179,7 +179,7 @@ class FirestoreService {
           .get();
 
       return querySnapshot.docs
-          .map((doc) => Contact.fromMap(doc.data()))
+          .map((doc) => Contact.fromJson(doc.data()))
           .toList();
     } catch (e) {
       debugPrint('Error getting contacts: $e');
@@ -195,7 +195,7 @@ class FirestoreService {
         .orderBy('priority')
         .snapshots()
         .map((snapshot) => snapshot.docs
-            .map((doc) => Contact.fromMap(doc.data()))
+            .map((doc) => Contact.fromJson(doc.data()))
             .toList());
   }
 
@@ -264,7 +264,7 @@ class FirestoreService {
       };
 
       if (location != null) {
-        updateData['lastLocation'] = location.toMap();
+        updateData['lastLocation'] = location.toJson();
       }
 
       await _usersCollection.doc(deviceId).update(updateData);
@@ -280,7 +280,7 @@ class FirestoreService {
   Stream<UserData?> getUserStream(String deviceId) {
     return _usersCollection.doc(deviceId).snapshots().map((snapshot) {
       if (snapshot.exists) {
-        return UserData.fromMap(snapshot.data() as Map<String, dynamic>);
+        return UserData.fromJson(snapshot.data() as Map<String, dynamic>);
       }
       return null;
     });

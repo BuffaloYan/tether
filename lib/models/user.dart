@@ -2,8 +2,8 @@ import 'contact.dart';
 import 'location.dart';
 
 class UserData {
-  final String deviceId;
-  final String uid;
+  final String deviceId;  // Stable internal UUID - never changes
+  final String uid;       // Firebase Auth UID - can change if user links different providers
   final DateTime createdAt;
   final DateTime? lastCheckIn;
   final LocationData? lastLocation;
@@ -12,6 +12,10 @@ class UserData {
   final bool isPremium;
   final bool alerted;
   final List<Contact> contacts;
+  final List<String> authProviders; // Track which providers are linked (biometric, google, facebook, apple)
+  final String? email;  // Email from social login (if available)
+  final String? displayName;  // Display name from social login (if available)
+  final String? photoUrl;  // Profile photo URL from social login (if available)
 
   UserData({
     required this.deviceId,
@@ -24,6 +28,10 @@ class UserData {
     this.isPremium = false,
     this.alerted = false,
     this.contacts = const [],
+    this.authProviders = const ['biometric'], // Default to biometric
+    this.email,
+    this.displayName,
+    this.photoUrl,
   });
 
   factory UserData.fromJson(Map<String, dynamic> json) {
@@ -45,6 +53,13 @@ class UserData {
               ?.map((c) => Contact.fromJson(c as Map<String, dynamic>))
               .toList() ??
           [],
+      authProviders: (json['authProviders'] as List<dynamic>?)
+              ?.map((p) => p as String)
+              .toList() ??
+          ['biometric'],
+      email: json['email'] as String?,
+      displayName: json['displayName'] as String?,
+      photoUrl: json['photoUrl'] as String?,
     );
   }
 
@@ -60,6 +75,10 @@ class UserData {
       'isPremium': isPremium,
       'alerted': alerted,
       'contacts': contacts.map((c) => c.toJson()).toList(),
+      'authProviders': authProviders,
+      'email': email,
+      'displayName': displayName,
+      'photoUrl': photoUrl,
     };
   }
 
@@ -100,6 +119,10 @@ class UserData {
     bool? isPremium,
     bool? alerted,
     List<Contact>? contacts,
+    List<String>? authProviders,
+    String? email,
+    String? displayName,
+    String? photoUrl,
   }) {
     return UserData(
       deviceId: deviceId ?? this.deviceId,
@@ -112,6 +135,10 @@ class UserData {
       isPremium: isPremium ?? this.isPremium,
       alerted: alerted ?? this.alerted,
       contacts: contacts ?? this.contacts,
+      authProviders: authProviders ?? this.authProviders,
+      email: email ?? this.email,
+      displayName: displayName ?? this.displayName,
+      photoUrl: photoUrl ?? this.photoUrl,
     );
   }
 }
